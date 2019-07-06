@@ -126,3 +126,4 @@ dmypy.json
 # class stuff
 lectures/
 .vscode/
+notebooks/homework/

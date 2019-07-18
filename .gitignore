@@ -127,3 +127,5 @@ dmypy.json
 lectures/
 .vscode/
 notebooks/homework/
+*.tar
+*.gz

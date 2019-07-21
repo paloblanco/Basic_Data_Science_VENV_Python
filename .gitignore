@@ -126,6 +126,6 @@ dmypy.json
 # class stuff
 lectures/
 .vscode/
-notebooks/homework/
 *.tar
 *.gz
+**/\.\_*

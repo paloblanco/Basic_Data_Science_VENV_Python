@@ -93,12 +93,16 @@ def yelp_search(api_key: str, query: str) -> Tuple[int, List[dict]]:
     Returns:
         num_records (integer): total number of businesses on Yelp corresponding to the query
         businesses (list): list of dicts representing each business
+    Notes:
+        Realpython has a good article on this: https://realpython.com/python-requests/
     """
     http_address = "https://api.yelp.com/v3/businesses/search"
-    
-
-    # Write solution here
-    pass
+    params = {"location": query}
+    headers = {"Authorization":f"Bearer {api_key}"}
+    response = requests.get(http_address, params=params, headers=headers)
+    num_records = len(response.json()['businesses'])
+    businesses = response.json()['businesses']
+    return num_records, businesses
 
 
 

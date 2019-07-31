@@ -73,3 +73,32 @@ def retrieve_html(url: str) -> Tuple[int, str]:
     return status_code, raw_html
 
 #%%
+#=====================
+# get my api key
+
+def read_api_key() -> str:
+    """
+    Read the Yelp API Key from file.
+    Returns:
+        api_key (string): The API Key
+    """
+    with open("private/yelp_key.txt", 'r') as f:
+        return f.read().replace('\n','')
+
+def yelp_search(api_key: str, query: str) -> Tuple[int, List[dict]]:
+    """
+    Make an authenticated request to the Yelp API.
+    Args:
+        query (string): Search term
+    Returns:
+        total (integer): total number of businesses on Yelp corresponding to the query
+        businesses (list): list of dicts representing each business
+    """
+    
+    # Write solution here
+    pass
+
+
+
+
+#%%

@@ -129,3 +129,4 @@ lectures/
 *.tar
 *.gz
 **/\.\_*
+private/

@@ -22,3 +22,9 @@ response = requests.get("http://www.google.com/search", params=params)
 print(response.status_code)
 
 #%%
+token = "f04ccc0bc7792ecc3626fe7e5328a64b3d898812"
+response = requests.get("https://api.github.com/user", params={"access_token":token})
+
+print(response.status_code)
+print(response.headers)
+print(response.status_code)

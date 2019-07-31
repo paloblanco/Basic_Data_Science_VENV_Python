@@ -51,3 +51,14 @@ def test_retrieve_html():
     assert test_code == desired_code
     # assert test_html[:20] == desired_html[:20]
     return
+
+def test_yelp_api_key():
+    test_str = RoccoHW1.read_api_key()
+
+    assert isinstance(test_str, str)
+
+def test_yelp_api():
+    api_key = RoccoHW1.read_api_key()
+    
+    # test_total, businesses = 
+    pass

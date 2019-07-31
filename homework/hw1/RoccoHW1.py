@@ -89,12 +89,14 @@ def yelp_search(api_key: str, query: str) -> Tuple[int, List[dict]]:
     """
     Make an authenticated request to the Yelp API.
     Args:
-        query (string): Search term
+        query (string): Search term, such as 'Pittsburgh'. This will be used in 'location'
     Returns:
-        total (integer): total number of businesses on Yelp corresponding to the query
+        num_records (integer): total number of businesses on Yelp corresponding to the query
         businesses (list): list of dicts representing each business
     """
+    http_address = "https://api.yelp.com/v3/businesses/search"
     
+
     # Write solution here
     pass
 

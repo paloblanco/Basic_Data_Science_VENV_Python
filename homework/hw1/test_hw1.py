@@ -59,6 +59,8 @@ def test_yelp_api_key():
 
 def test_yelp_api():
     api_key = RoccoHW1.read_api_key()
-    
-    # test_total, businesses = 
-    pass
+    num_records, data = RoccoHW1.yelp_search(api_key, "Pittsburgh")
+
+    assert isinstance(num_records, int)
+    assert isinstance(data, list)
+    return    

@@ -62,5 +62,75 @@ def test_yelp_api():
     num_records, data = RoccoHW1.yelp_search(api_key, "Pittsburgh")
 
     assert isinstance(num_records, int)
+    assert num_records > 1000
     assert isinstance(data, list)
     return    
+
+def test_yelp_restaurants():
+    api_key = RoccoHW1.read_api_key()
+    num_records, data = RoccoHW1.yelp_search_restaurants(api_key, "Squirrel Hill, Pittsburgh")
+
+    assert isinstance(num_records, int)
+    assert num_records > 10
+    assert isinstance(data, list)
+    return    
+
+def test_parse_api_response():
+    test_string = """
+            {
+        "total": 8228,
+        "businesses": [
+            {
+            "rating": 4,
+            "price": "$",
+            "phone": "+14152520800",
+            "id": "four-barrel-coffee-san-francisco",
+            "is_closed": false,
+            "categories": [
+                {
+                "alias": "coffee",
+                "title": "Coffee & Tea"
+                }
+            ],
+            "review_count": 1738,
+            "name": "Four Barrel Coffee",
+            "url": "https://www.yelp.com/biz/four-barrel-coffee-san-francisco",
+            "coordinates": {
+                "latitude": 37.7670169511878,
+                "longitude": -122.42184275
+            },
+            "image_url": "http://s3-media2.fl.yelpcdn.com/bphoto/MmgtASP3l_t4tPCL1iAsCg/o.jpg",
+            "location": {
+                "city": "San Francisco",
+                "country": "US",
+                "address2": "",
+                "address3": "",
+                "state": "CA",
+                "address1": "375 Valencia St",
+                "zip_code": "94103"
+            },
+            "distance": 1604.23,
+            "transactions": ["pickup", "delivery"]
+            }
+        ],
+        "region": {
+            "center": {
+            "latitude": 37.767413217936834,
+            "longitude": -122.42820739746094
+            }
+        }
+        }"""
+    list_urls = RoccoHW1.parse_api_response(test_string)
+
+    assert isinstance(list_urls, list)
+    for each in list_urls:
+        assert isinstance(each, str)
+        assert "https" in each
+
+def test_parse_page():
+    test_url = 'https://www.yelp.com/biz/pigeon-bagels-pittsburgh?adjust_creative=lYR2VjM0WMaytcyfk5_frA&utm_campaign=yelp_api_v3&utm_medium=api_v3_business_search&utm_source=lYR2VjM0WMaytcyfk5_frA'
+    list_reviews, url_next = RoccoHW1.parse_page(test_url)
+
+    assert isinstance(list_reviews, list)
+    assert isinstance(url_next, str) or url_next is None
+    

@@ -100,11 +100,104 @@ def yelp_search(api_key: str, query: str) -> Tuple[int, List[dict]]:
     params = {"location": query}
     headers = {"Authorization":f"Bearer {api_key}"}
     response = requests.get(http_address, params=params, headers=headers)
-    num_records = len(response.json()['businesses'])
+    num_records = response.json()['total']
     businesses = response.json()['businesses']
+    return num_records, businesses
+    
+
+#%%
+# Yelp search for restaurants only
+import time
+
+def yelp_search_restaurants(api_key: str, query: str) -> Tuple[int, List[dict]]:
+    """
+    Make an authenticated request to the Yelp API.
+    Args:
+        query (string): Search term, such as 'Pittsburgh'. This will be used in 'location'
+    Returns:
+        num_records (integer): total number of businesses on Yelp corresponding to the query
+        businesses (list): list of dicts representing each business
+    Notes:
+        Realpython has a good article on this: https://realpython.com/python-requests/
+    """
+    http_address = "https://api.yelp.com/v3/businesses/search"
+    offset = 0
+    params = {"location": query,
+                "limit": 50,
+                "categories": "restaurants, All",
+                "radius": 1000,
+                "offset": offset}
+    headers = {"Authorization":f"Bearer {api_key}"}
+    response = requests.get(http_address, params=params, headers=headers)
+    num_records = response.json()['total']
+    businesses = response.json()['businesses']
+    # do another search if required
+    if offset < num_records:
+        offset += 50
+        params = {"location": query,
+                "limit": 50,
+                "categories": "restaurants, All",
+                "radius": 1000,
+                "offset": offset}
+        response = requests.get(http_address, params=params, headers=headers)
+        businesses = businesses + response.json()['businesses']
+        time.sleep(0.5) # don't make this lower than 0.2 so you don't get banned
     return num_records, businesses
 
 
+#%%
+import json
 
+def parse_api_response(data: str) -> List[str]:
+    """
+    Parse Yelp API results to extract restaurant URLs.
+    
+    Args:
+        data (string): String of properly formatted JSON.
+
+    Returns:
+        (list): list of URLs as strings from the input JSON.
+    """
+    dict_biz: dict = json.loads(data)
+    list_biz = dict_biz["businesses"]
+    urls = list(map(lambda x: x['url'], list_biz))
+    return urls
+
+#%%
+from bs4 import BeautifulSoup as BS
+
+def parse_page(html: str) -> Tuple[List[dict], str]:
+    """
+    Parse the reviews on a single page of a restaurant.
+    
+    Args:
+        html (string): String of HTML corresponding to a Yelp restaurant
+
+    Returns:
+        tuple(list, string): a tuple of two elements
+            first element: list of dictionaries corresponding to the extracted review information
+            second element: URL for the next page of reviews (or None if it is the last page)
+    """
+    
+    response = requests.get(html)
+    text = response.text
+    soup = BS(text, 'html.parser')
+    tags_reviews = soup.find_all("div",{"class":"review review--with-sidebar"})
+    for tag in tags_reviews:
+        pass
+    return soup
+
+def extract_reviews(url):
+    """
+    Retrieve ALL of the reviews for a single restaurant on Yelp.
+
+    Parameters:
+        url (string): Yelp URL corresponding to the restaurant of interest.
+
+    Returns:
+        reviews (list): list of dictionaries containing extracted review information
+    """
+    # Write solution here
+    pass
 
 #%%

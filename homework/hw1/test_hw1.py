@@ -134,3 +134,51 @@ def test_parse_page():
     assert isinstance(list_reviews, list)
     assert isinstance(url_next, str) or url_next is None
     
+#============
+# Testing on HW1 part 2, XML parsing
+#============
+
+import RoccoHW1_xml as rx
+
+def test_regex_compile():
+    """Test the regular expressions created at the top of the file
+    """
+    xml_test = """<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE xml> <!-- not actually valid xml-->
+<!-- This is a comment -->
+<note date="8/31/12">
+    <to>Tove</to>
+    <from>Jani</from>
+    <heading type="Reminder"/>
+    <body>Don't forget me this weekend!</body>
+    <!-- This is a multiline comment,
+         which take a bit of care to parse -->
+</note>
+"""
+    tag_open_result = [('note', ' date="8/31/12"'), ('to', ''), ('from', ''), ('heading', ' type="Reminder"/'), ('body', '')]
+    tag_close_result = [('to', ''), ('from', ''), ('body', ''), ('note', '')]
+    tag_open_close_result = [('heading', ' type="Reminder"')]
+    comment_result =  [' not actually valid xml', ' This is a comment ', ' This is a multiline comment,\n         which take a bit of care to parse ']
+    xml_prolog_result = ['xml version="1.0" encoding="UTF-8"']
+    html_prolog_result = ['DOCTYPE xml']
+
+    for t1, t2 in zip(rx.tag_open.findall(xml_test), tag_open_result):
+        assert t1[0] == t2[0]
+        assert t1[1] == t2[1]
+
+    for t1, t2 in zip(rx.tag_close.findall(xml_test), tag_close_result):
+        assert t1[0] == t2[0]
+        assert t1[1] == t2[1]
+
+    for t1, t2 in zip(rx.tag_open_close.findall(xml_test), tag_open_close_result):
+        assert t1[0] == t2[0]
+        assert t1[1] == t2[1]
+
+    for t1, t2 in zip(rx.comment.findall(xml_test), comment_result):
+        assert t1 == t2
+
+    for t1, t2 in zip(rx.xml_prolog.findall(xml_test), xml_prolog_result):
+        assert t1 == t2
+
+    for t1, t2 in zip(rx.html_prolog.findall(xml_test), html_prolog_result):
+        assert t1 == t2

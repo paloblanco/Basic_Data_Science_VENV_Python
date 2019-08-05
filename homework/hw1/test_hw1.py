@@ -182,3 +182,20 @@ def test_regex_compile():
 
     for t1, t2 in zip(rx.html_prolog.findall(xml_test), html_prolog_result):
         assert t1 == t2
+
+    #======== check nums
+
+    tag_open=469
+    tag_close=439
+    tag_open_close=30
+    comment=23
+    xml_prolog=0
+    html_declaration=1
+
+    website = rx.course_webpage
+    assert len(rx.tag_open.findall(website)) == tag_open
+    assert len(rx.tag_close.findall(website)) == tag_close
+    assert len(rx.tag_open_close.findall(website)) == tag_open_close
+    assert len(rx.comment.findall(website)) == comment
+    assert len(rx.xml_prolog.findall(website)) == xml_prolog
+    assert len(rx.html_prolog.findall(website)) == html_declaration

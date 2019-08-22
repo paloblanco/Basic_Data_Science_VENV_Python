@@ -136,7 +136,7 @@ def test_parse_page():
     
 #============
 # Testing on HW1 part 2, XML parsing
-#============
+#=============
 
 import RoccoHW1_xml as rx
 
@@ -199,3 +199,20 @@ def test_regex_compile():
     assert len(rx.comment.findall(website)) == comment
     assert len(rx.xml_prolog.findall(website)) == xml_prolog
     assert len(rx.html_prolog.findall(website)) == html_declaration
+
+def test_XMLNode():
+    test_snippet = """<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE xml> <!-- not actually valid xml-->
+<!-- This is a comment -->
+<note date="8/31/12">
+    <to>Tove</to>
+    <from>Jani</from>
+    <heading type="Reminder"/>
+    <body>Don't forget me this weekend!</body>
+    <!-- This is a multiline comment,
+         which take a bit of care to parse -->
+</note>
+"""
+    root = rx.XMLNode("", {}, test_snippet)
+    
+

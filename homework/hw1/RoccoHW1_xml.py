@@ -23,3 +23,12 @@ xml_prolog: re.Pattern = re.compile(r"<\?([\s\S]*?)\?>")
 html_prolog: re.Pattern = re.compile(r"<!(DOC[\w\s]*?)>")
 
 #%%
+#### Q2: fill in this cell
+
+class XMLNode:
+    
+    def __init__(self, tag, attributes, content):
+        self.tag = tag
+        self.attributes = attributes
+        self.children =  []
+        self.content = content

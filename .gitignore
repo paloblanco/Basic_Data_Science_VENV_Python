@@ -130,3 +130,5 @@ lectures/
 *.gz
 **/\.\_*
 private/
+videos/
+*.mp4
